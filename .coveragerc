@@ -1,0 +1,5 @@
+[run]
+source = trytond.modules.electronic_mail_template
+
+[report]
+omit = */tests/*, */fabfile.py

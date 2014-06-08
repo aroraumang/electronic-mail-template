@@ -14,28 +14,31 @@ minor_version = int(minor_version)
 requires = []
 for dep in info.get('depends', []):
     if not re.match(r'(ir|res|workflow|webdav)(\W|$)', dep):
-        requires.append('trytond_%s >= %s.%s, < %s.%s' %
-                (dep, major_version, minor_version, major_version,
-                    minor_version + 1))
-requires.append('trytond >= %s.%s, < %s.%s' %
-        (major_version, minor_version, major_version, minor_version + 1))
+        requires.append('trytond_%s >= %s.%s, < %s.%s' % (
+            dep, major_version, minor_version, major_version, minor_version + 1
+        ))
+requires.append('trytond >= %s.%s, < %s.%s' % (
+    major_version, minor_version, major_version, minor_version + 1
+))
 
-setup(name='trytond_electronic_mail_template',
+setup(
+    name='trytond_electronic_mail_template',
     version=info.get('version', '0.0.1'),
     description=info.get('description', ''),
     author=info.get('author', ''),
     author_email=info.get('email', ''),
     url=info.get('website', ''),
-    download_url="http://downloads.tryton.org/" + \
-            info.get('version', '0.0.1').rsplit('.', 1)[0] + '/',
+    download_url="http://downloads.tryton.org/" + info.get(
+        'version', '0.0.1'
+    ).rsplit('.', 1)[0] + '/',
     package_dir={'trytond.modules.electronic_mail_template': '.'},
     packages=[
         'trytond.modules.electronic_mail_template',
         'trytond.modules.electronic_mail_template.tests',
     ],
     package_data={
-        'trytond.modules.electronic_mail_template': info.get('xml', []) \
-                + info.get('translation', []),
+        'trytond.modules.electronic_mail_template': info.get(
+            'xml', []) + info.get('translation', []),
     },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -61,4 +64,3 @@ setup(name='trytond_electronic_mail_template',
     test_suite='tests',
     test_loader='trytond.test_loader:Loader',
 )
-

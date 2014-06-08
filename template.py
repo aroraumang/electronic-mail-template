@@ -4,10 +4,6 @@
 "Email Template"
 from __future__ import with_statement
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 import mimetypes
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -34,7 +30,7 @@ def split_emails(email_ids):
     :type email_ids: str or unicode
     """
     if not email_ids:
-        return [ ]
+        return []
     email_ids = email_ids.replace(' ', '').replace(',', ';')
     return email_ids.split(';')
 
@@ -45,7 +41,7 @@ def recepients_from_fields(email_record):
 
     :param email_record: Browse record of the email
     """
-    recepients = [ ]
+    recepients = []
     for field in ('to', 'cc', 'bcc'):
         recepients.extend(split_emails(getattr(email_record, field)))
     return recepients
@@ -57,7 +53,7 @@ class Template(ModelSQL, ModelView):
     _description = __doc__
     _inherits = {
         'electronic_mail': 'electronic_mail',
-        }
+    }
 
     #: The design inherits from elecronic mail because a template
     #: is infact the source record to generate an electronic mail
@@ -82,7 +78,7 @@ class Template(ModelSQL, ModelView):
         context={
             'model': Eval('model'),
             'email_template': True,
-            })
+        })
 
     def default_engine(self):
         '''Default Engine'''
@@ -93,7 +89,7 @@ class Template(ModelSQL, ModelView):
 
         :return: List of tuples
         '''
-        engines = [ 
+        engines = [
             ('python', 'Python'),
             ('genshi', 'Genshi'),
         ]
@@ -157,7 +153,7 @@ class Template(ModelSQL, ModelView):
         if template.language:
             language = self.eval(template, template.language, record)
 
-        with Transaction().set_context(langauge = language):
+        with Transaction().set_context(langauge=language):
             template = self.browse(template.id)
 
             # Simple rendering fields
@@ -170,7 +166,7 @@ class Template(ModelSQL, ModelView):
                 'subject': 'subject',
                 'message_id': 'message-id',
                 'in_reply_to': 'in-reply-to',
-                }
+            }
             for field_name in simple_fields.keys():
                 field_expression = getattr(template, field_name)
                 eval_result = self.eval(template, field_expression, record)
@@ -181,13 +177,13 @@ class Template(ModelSQL, ModelView):
             if template.reports:
                 reports = self.render_reports(
                     template, record
-                    )
+                )
                 for report in reports:
                     data, filename = report[1:3]
                     content_type, _ = mimetypes.guess_type(filename)
                     maintype, subtype = (
                         content_type or 'application/octet-stream'
-                        ).split('/', 1)
+                    ).split('/', 1)
 
                     attachment = MIMEBase(maintype, subtype)
                     attachment.set_payload(data)
@@ -224,7 +220,7 @@ class Template(ModelSQL, ModelView):
             data
             the report name
         '''
-        reports = [ ]
+        reports = []
         for report_action in template.reports:
             report = Pool().get(report_action.report_name, type='report')
             reports.append(report.execute([record.id], {'id': record.id}))
@@ -275,8 +271,9 @@ class Template(ModelSQL, ModelView):
         recepients = recepients_from_fields(email_record)
 
         server = get_smtp_server()
-        server.sendmail(email_record.from_, recepients,
-            email_obj._get_email(email_record))
+        server.sendmail(
+            email_record.from_, recepients, email_obj._get_email(email_record)
+        )
         server.quit()
         return True
 

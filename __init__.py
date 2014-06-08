@@ -3,6 +3,6 @@
 # this repository contains the full copyright notices and license terms.
 'Electronic Mail Templates'
 
-from .template import *
-from .electronic_mail import *
-from .trigger import *
+from .template import *  # noqa
+from .electronic_mail import *  # noqa
+from .trigger import *  # noqa

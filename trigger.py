@@ -13,8 +13,8 @@ class Trigger(ModelSQL, ModelView):
     _name = 'ir.trigger'
 
     email_template = fields.Many2One(
-        'electronic_mail.template', 'Template', 
-        )
+        'electronic_mail.template', 'Template',
+    )
 
     def default_model(self):
         """If invoked from the email_template fill model
@@ -22,7 +22,7 @@ class Trigger(ModelSQL, ModelView):
         return Transaction().context.get('model', False)
 
     def default_action_model(self):
-        """If invoked from the email_template fill 
+        """If invoked from the email_template fill
         action model as email_template
         """
         model_obj = Pool().get('ir.model')

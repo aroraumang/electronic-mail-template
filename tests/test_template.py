@@ -4,9 +4,11 @@
 # this repository contains the full copyright notices and license terms.
 "Electronic Mail Template test suite"
 
-import sys, os
-DIR = os.path.abspath(os.path.normpath(os.path.join(__file__,
-    '..', '..', '..', '..', '..', 'trytond')))
+import sys
+import os
+DIR = os.path.abspath(os.path.normpath(os.path.join(
+    __file__, '..', '..', '..', '..', '..', 'trytond'
+)))
 if os.path.isdir(DIR):
     sys.path.insert(0, os.path.dirname(DIR))
 import unittest
@@ -42,8 +44,7 @@ def suite():
     suite = trytond.tests.test_tryton.suite()
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(
         TemplateTestCase
-        )
-    )
+    ))
     return suite
 
 if __name__ == '__main__':
